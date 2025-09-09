@@ -1,0 +1,18 @@
+white
+rgb(199, 199, 204)
+rgb(242, 242, 247)
+
+
+
+
+dark
+rgb(28, 28, 30)
+rgb(44, 44, 46)
+rgb(99, 99, 102)
+
+hover
+#a0a0a
+
+accent
+purple
+#4f46e5

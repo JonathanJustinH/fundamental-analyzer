@@ -1,0 +1,23 @@
+from fastapi import FastAPI, HTTPException
+import requests
+import os
+
+app = FastAPI()
+
+API_KEY = os.getenv("4YNzPK-zyhNMWWLzHLDy")
+
+@app.get("/cot/{dataset_code}")
+def get_cot_data(dataset_code:str):
+    url = f"https://data.nasdaq.com/api/v3/datasets/{dataset_code}.json"
+    param = {"api+key": API_KEY}
+    response = requests.get(url, params=params)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="Failed to fetch data")
+
+    data = response.json()
+    return {
+        "dataset": data.get("dataset", {}).get("name"),
+        "description": data.get("dataset", {}).get("description"),
+        "latest_data": data.get("dataset", {}).get("data", [])[:5]
+    }

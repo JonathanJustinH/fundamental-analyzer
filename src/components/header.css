@@ -1,0 +1,24 @@
+.header {
+    display: flex;
+    font-size: large;
+    background-color: rgb(28, 28, 30);
+    padding: 1rem;
+    align-items: center;
+}
+
+.header h2 {
+    padding-left: 1rem;
+    margin: 0;
+    color: rgb(242, 242, 247);
+    background-color: rgb(28,28,30);
+    font-size: larger;
+    font-weight: lighter;
+}
+
+.menuButton {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: rgb(242, 242, 247);
+    cursor: pointer;
+}

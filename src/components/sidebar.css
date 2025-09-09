@@ -1,0 +1,105 @@
+.sidePanel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: rgb(28, 28, 30);
+    color: rgb(242, 242, 247);
+    padding: 1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.sidePanel.open {
+    transform: translateX(0);
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.sidePanel nav {
+    margin-top: 3rem;
+}
+
+.sidePanel nav a {
+    display: block;
+    color: rgb(242, 242, 247);
+    background-color: rgb(28, 28, 30);
+    padding: 0.5rem 0;
+    text-decoration: none;
+    transition: color 0.1s ease-in-out;
+}
+
+.sidePanel nav a:hover {
+    color: #a0a0a5;
+}
+
+
+.closeButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: none;
+    border: none;
+    color: rgb(242, 242, 247);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 0;
+}
+
+.closeButton:hover {
+    color: #a0a0a5;
+}
+
+
+/* Dropdown styles */
+
+
+.dropdownToggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: rgb(242, 242, 247);
+    font-size: 1.rem;
+    text-align: left;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+    background-color: rgb(28, 28, 30);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdownToggle span {
+    background-color: rgb(28, 28, 30);
+    font-size: 1rem;
+}
+
+.dropdownToggle:hover {
+    color: #a0a0a5;
+}
+
+.dropdownMenu {
+    border-left: 1px solid rgba(242, 242, 247, 0.1);
+    padding-left: 0.5rem;
+    background-color: rgb(28, 28, 30);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease-in-out;
+}
+
+.dropdownMenu.open {
+    max-height: 500px;
+}
+
+
+.dropdownItem {
+    display: block;
+    padding: 0.4rem 0;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease-in-out;
+    background-color: rgb(28, 28, 30);
+}
