@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import MockNUMdata from '../data/mockNUMdata';
+import MockPCTData from '../data/mockPCTdata';
 
 export interface EconomicRecord {
     date: string;
@@ -15,6 +17,7 @@ export const useNFPData = () => {
         const fetchNFP = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/nfp");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -25,6 +28,7 @@ export const useNFPData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching NFP:", err);
+                setData(MockNUMdata);
             } finally {
                 setLoading(false);
             }
@@ -43,6 +47,7 @@ export const useCPIData = () => {
         const fetchCPI = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/cpi");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -53,6 +58,7 @@ export const useCPIData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching CPI:", err);
+                setData(MockPCTData);
             } finally {
                 setLoading(false);
             }
@@ -71,6 +77,7 @@ export const usePPIData = () => {
         const fetchPPI = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/ppi");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -81,6 +88,7 @@ export const usePPIData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching PPI:", err);
+                setData(MockPCTData);
             } finally {
                 setLoading(false);
             }
@@ -99,6 +107,7 @@ export const useReSaData = () => {
         const fetchReSa = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/retail_sales");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -109,6 +118,7 @@ export const useReSaData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching Retail Sales:", err);
+                setData(MockPCTData);
             } finally {
                 setLoading(false);
             }
@@ -127,6 +137,7 @@ export const useInitialJobData = () => {
         const fetchInitialJob = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/initial-jobs");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -137,6 +148,7 @@ export const useInitialJobData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching Initial Jobs:", err);
+                setData(MockNUMdata);
             } finally {
                 setLoading(false);
             }
@@ -155,6 +167,7 @@ export const usePCEData = () => {
         const fetchPCE = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:8000/economic/pce");
+                if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
                     date: item.date,
@@ -165,6 +178,7 @@ export const usePCEData = () => {
                 setData(transformed);
             } catch (err) {
                 console.error("Error fetching PCE:", err);
+                setData(MockPCTData);
             } finally {
                 setLoading(false);
             }
