@@ -16,7 +16,7 @@ export const useNFPData = () => {
     useEffect(() => {
         const fetchNFP = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/nfp");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/nfp");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
@@ -46,7 +46,7 @@ export const useCPIData = () => {
     useEffect(() => {
         const fetchCPI = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/cpi");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/cpi");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
@@ -76,7 +76,7 @@ export const usePPIData = () => {
     useEffect(() => {
         const fetchPPI = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/ppi");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/ppi");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
@@ -106,7 +106,7 @@ export const useReSaData = () => {
     useEffect(() => {
         const fetchReSa = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/retail_sales");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/retail_sales");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
@@ -136,7 +136,7 @@ export const useInitialJobData = () => {
     useEffect(() => {
         const fetchInitialJob = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/initial-jobs");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/initial-jobs");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
@@ -166,7 +166,7 @@ export const usePCEData = () => {
     useEffect(() => {
         const fetchPCE = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/economic/pce");
+                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/pce");
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed = result.data.map((item: any, i: number, arr: any[]) => ({
