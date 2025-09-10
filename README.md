@@ -112,15 +112,32 @@ cd backend
 pytest
 ```
 
----
-
-## Screenshots
-<!-- ![Dashboard Example](screenshots/dashboard.png) -->
-
----
-
 ## Deployment
-- -
+
+### Frontend (Vercel)
+1. Push your code to GitHub.
+2. Go to [Vercel](https://vercel.com/), import your repository, and deploy.
+3. In Vercel dashboard, set the environment variable:
+   - `REACT_APP_API_URL` = `https://your-backend.onrender.com`
+   (replace with your actual Render backend URL)
+4. Redeploy your frontend after setting the environment variable.
+
+### Backend (Render)
+1. Push your backend code to GitHub.
+2. Go to [Render](https://render.com/), create a new Web Service, and connect your repo.
+3. Set the root directory to `backend` if needed.
+4. Set the build command:  
+   `pip install -r requirements.txt`
+5. Set the start command:  
+   `uvicorn main:app --host 0.0.0.0 --port 10000`
+6. Add your required environment variables (e.g. `FRED_API_KEY`) in the Render dashboard.
+7. Deploy and copy your backend URL for use in the frontend.
+
+---
+
+**Note:**  
+- Make sure the backend CORS settings allow requests from your Vercel frontend URL.
+- Never commit your `.env` file with real API keys to public repositories.
 
 ---
 
@@ -129,3 +146,7 @@ pytest
 - Data via FRED
 
 ---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
