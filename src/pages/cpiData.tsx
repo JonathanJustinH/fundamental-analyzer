@@ -11,7 +11,7 @@ const CPIData = () => {
     useEffect(() => {
         const fetchCPI = async () => {
             try {
-                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/cpi");
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/cpi`);
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed_data = result.data.map((item: any, i: number, arr: any[]) => ({

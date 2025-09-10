@@ -11,7 +11,7 @@ const PCEData = () => {
     useEffect(() => {
         const fetchPCE = async () => {
             try {
-                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/pce");
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/pce`);
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed_data = result.data.map((item: any, i: number, arr: any[]) => ({

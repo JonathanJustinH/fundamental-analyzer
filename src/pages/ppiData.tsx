@@ -11,7 +11,7 @@ const PPIData = () => {
     useEffect(() => {
         const fetchPPI = async () => {
             try{
-                const response = await fetch("${process.env.REACT_APP_API_URL}/economic/ppi");
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/ppi`);
                 if (!response.ok) throw new Error("No API");
                 const result = await response.json();
                 const transformed_data = result.data.map((item: any, i: number, arr: any[]) => ({
