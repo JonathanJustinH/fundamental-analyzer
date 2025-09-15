@@ -1,4 +1,4 @@
-# Fundamental Analyzer
+# FOREX Sentiment Dashboard
 
 A full-stack web application for visualizing and analyzing key US economic indicators. Built with React and FastAPI.
 

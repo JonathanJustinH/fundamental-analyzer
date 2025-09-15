@@ -11,7 +11,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
             <button className="menuButton" onClick={onMenuClick}>
                 ☰
             </button>
-            <h2>Currency Fundamental Analyzer</h2>
+            <h2>Forex Sentiment Dashboard</h2>
         </div>
     )
 }
