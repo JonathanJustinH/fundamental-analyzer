@@ -2,6 +2,7 @@
 
 A full-stack web application for visualizing and analyzing key US economic indicators. Built with React and FastAPI.
 
+# https://fundamental-analyzer.vercel.app/nfp-data
 ---
 
 ## Features
