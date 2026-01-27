@@ -27,4 +27,4 @@ yarn-error.log*
 __pycache__/
 *.pyc
 
-/economic.db
+economic.db
