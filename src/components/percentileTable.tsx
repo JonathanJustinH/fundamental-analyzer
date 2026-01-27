@@ -1,4 +1,3 @@
-import React from "react";
 import "../components/table.css";
 
 interface DataEntry {
@@ -13,9 +12,9 @@ interface TableProps {
 }
 
 const PctTable = ({ data }: TableProps) => {
-    const sortedData = [...data].sort(
-        (a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    ).slice(0, 7);
+    const sortedData = [...data]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 7);
     return (
         <table className="genericTable">
             <thead>
@@ -34,11 +33,11 @@ const PctTable = ({ data }: TableProps) => {
                     return (
                         <tr key={index}>
                             <td>{entry.date}</td>
-                            <td>{entry.actual.toLocaleString()}{entry.actual != 0 ? '%' : ''}</td>
-                            <td>{entry.forecast.toLocaleString()}{entry.forecast != 0 ? '%' : ''}</td>
-                            <td>{entry.previous.toLocaleString()}{entry.previous != 0 ? '%' : ''}</td>
+                            <td>{entry.actual.toLocaleString()}{entry.actual !== 0 ? '%' : ''}</td>
+                            <td>{entry.forecast.toLocaleString()}{entry.forecast !== 0 ? '%' : ''}</td>
+                            <td>{entry.previous.toLocaleString()}{entry.previous !== 0 ? '%' : ''}</td>
                             <td style={{ color: surprise > 0 ? "green" : "red" }}>
-                                {surprise.toLocaleString()}{surprise != 0 ? '%' : ''}
+                                {surprise.toLocaleString()}{surprise !== 0 ? '%' : ''}
                             </td>
                         </tr>
                     );
