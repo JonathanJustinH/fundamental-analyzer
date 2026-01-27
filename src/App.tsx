@@ -15,6 +15,7 @@ import ReSaData from './pages/reSalesData';
 import InitialJobsData from './pages/initialJobData';
 import ManuPMIData from './pages/manuPMIData';
 import ServPMIData from './pages/servPMIData';
+import AISentiment from './pages/AISentiment';
 
 const App = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,7 @@ const App = () => {
                     <Route path='/services-pmi-data' element={<ServPMIData />}/>
                     <Route path='/retail-sales-data' element={<ReSaData />}/>
                     <Route path='/initial-jobs-data' element={<InitialJobsData />}/>
+                    <Route path='/ai-sentiment' element={<AISentiment />}/>
                 </Routes>
             </div>
         </Router>

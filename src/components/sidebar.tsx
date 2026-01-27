@@ -24,6 +24,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 { path: "/services-pmi-data", label: "Services PMIs" },
                 { path: "/retail-sales-data", label: "Retail Sales (MoM)" },
                 { path: "/initial-jobs-data", label: "U.S. Initial Jobs" },
+                { path: "/ai-sentiment", label: "Sentiment Summary" },
             ]
         }
     ]
