@@ -12,6 +12,28 @@ Base.metadata.create_all(bind=engine)
 
 @router.get("/economic/pce")
 def get_pce_history():
+    db: Session = SessionLocal()
+    try:
+        records = db.query(PCEData).order_by(PCEData.date.desc()).limit(120).all()
+        return {
+            "series": "PCEPILFE (Personal Consumption Expenditures Excluding Food and Energy (Chain-Type Price Index))",
+            "unit": "Percent",
+            "data": [
+                {
+                    "date": r.date,
+                    "value": r.value,
+                    "pce_change": r.pce_change
+                }
+                for r in records
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    finally:
+        db.close()
+
+@router.post("/economic/pce/update")
+def update_pce_history():
     api_key = os.getenv("FRED_API_KEY")
     if not api_key:
         raise HTTPException(500, "API key not configured")
@@ -33,20 +55,8 @@ def get_pce_history():
                 db.add(PCEData(date=row["date"], value=row["value"], pce_change=row["pce_change"]))
         db.commit()
 
-        records = db.query(PCEData).order_by(PCEData.date.desc()).limit(120).all()
-
-
         return {
-            "series": "PCEPILFE (Personal Consumption Expenditures Excluding Food and Energy (Chain-Type Price Index))",
-            "unit": "Percent",
-            "data": [
-                {
-                    "date": r.date,
-                    "value": r.value,
-                    "pce_change": r.pce_change
-                }
-                for r in records
-            ]
+            "message": "PCE data updated"
         }
     except Exception as e:
         raise HTTPException(500, detail=str(e))

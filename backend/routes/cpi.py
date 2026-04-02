@@ -10,8 +10,33 @@ import os
 router = APIRouter()
 Base.metadata.create_all(bind=engine)
 
+
+# GET: Only read from DB
 @router.get("/economic/cpi")
 def get_cpi_history():
+    db: Session = SessionLocal()
+    try:
+        records = db.query(CPIData).order_by(CPIData.date.desc()).limit(120).all()
+        return {
+            "series": "FPCPITOTLZGUSA (Inflation, consumer prices for the United States)",
+            "unit": "Percent",
+            "data": [
+                {
+                    "date": r.date,
+                    "value": r.value,
+                    "cpi_change": r.cpi_change
+                }
+                for r in records
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    finally:
+        db.close()
+
+# POST: Update DB from FRED
+@router.post("/economic/cpi/update")
+def update_cpi_history():
     api_key = os.getenv("FRED_API_KEY")
     if not api_key:
         raise HTTPException(500, "API key not configured")
@@ -32,22 +57,7 @@ def get_cpi_history():
             if not db.query(CPIData).filter(CPIData.date == row["date"]).first():
                 db.add(CPIData(date=row["date"], value=row["value"], cpi_change=row["cpi_change"]))
         db.commit()
-
-        records = db.query(CPIData).order_by(CPIData.date.desc()).limit(120).all()
-
-
-        return {
-            "series": "FPCPITOTLZGUSA (Inflation, consumer prices for the United States)",
-            "unit": "Percent",
-            "data": [
-                {
-                    "date": r.date,
-                    "value": r.value,
-                    "cpi_change": r.cpi_change
-                }
-                for r in records
-            ]
-        }
+        return {"message": "CPI data updated"}
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     finally:

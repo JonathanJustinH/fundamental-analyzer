@@ -30,7 +30,9 @@ export default function NumChart({ data, unit }: ChartProps) {
                         contentStyle={{ backgroundColor: "rgb(44, 44, 46)", border: "none", padding: "5px"}}
                         labelStyle={{ color: "rgb(199, 199, 204)", fontWeight: "bold" }}
                         itemStyle={{ color: "rgb(199, 199, 204)", fontSize: "14px" }}
-                        formatter={(value: number) => `${value.toLocaleString()}${unit ?? ""}`}
+                        formatter={(value) =>
+                            value != null ? `${Number(value).toLocaleString()}${unit ?? ""}` : ""
+                        }
                     />
                     <Bar dataKey="actual" fill="#4f46e5" />
                     <Brush dataKey="date" height={30} stroke="#4f46e5" />

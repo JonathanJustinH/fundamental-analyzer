@@ -1,3 +1,5 @@
+from email.policy import HTTP
+
 from fastapi import APIRouter, HTTPException
 import pandas as pd
 import numpy as np
@@ -11,6 +13,28 @@ router = APIRouter()
 Base.metadata.create_all(bind=engine)
 
 @router.get("/economic/initial-jobs")
+def get_initial_job_history():
+    db: Session = SessionLocal()
+    try:
+        records = db.query(initialJobData).order_by(initialJobData.date.desc()).limit(500).all()
+        return {
+            "series": "ICSA (Initial Claims)",
+            "unit": "Number",
+            "data": [
+                {
+                    "date": r.date,
+                    "value": r.value,
+                    "initial_job_change": r.initial_job_change
+                }
+                for r in records
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    finally:
+        db.close()
+
+@router.post("/economic/initial-jobs/update")
 def get_initial_job_history():
     api_key = os.getenv("FRED_API_KEY")
     if not api_key:
@@ -33,20 +57,8 @@ def get_initial_job_history():
                 db.add(initialJobData(date=row["date"], value=row["value"], initial_job_change=row["initial_job_change"]))
         db.commit()
 
-        records = db.query(initialJobData).order_by(initialJobData.date.desc()).limit(500).all()
-
-
         return {
-            "series": "ICSA (Initial Claims)",
-            "unit": "Number",
-            "data": [
-                {
-                    "date": r.date,
-                    "value": r.value,
-                    "initial_job_change": r.initial_job_change
-                }
-                for r in records
-            ]
+            "message": "Initial Jobs updated"    
         }
     except Exception as e:
         raise HTTPException(500, detail=str(e))

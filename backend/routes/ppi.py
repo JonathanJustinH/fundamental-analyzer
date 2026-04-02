@@ -12,6 +12,29 @@ Base.metadata.create_all(bind=engine)
 
 @router.get("/economic/ppi")
 def get_ppi_history():
+    db: Session = SessionLocal()
+    try:
+        records = db.query(PPIData).order_by(PPIData.date.desc()).limit(120).all()
+        return {
+            "series": "PPIFIS (Producer Price Index by Commodity: Final Demand)",
+            "unit": "Percent",
+            "data": [
+                {
+                    "date": r.date,
+                    "value": r.value,
+                    "ppi_change": r.ppi_change
+                }
+                for r in records
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    finally:
+        db.close()
+
+
+@router.post("/economic/ppi/update")
+def update_ppi_history():
     api_key = os.getenv("FRED_API_KEY")
     if not api_key:
         raise HTTPException(500, "API key not configured")
@@ -33,20 +56,8 @@ def get_ppi_history():
                 db.add(PPIData(date=row["date"], value=row["value"], ppi_change=row["ppi_change"]))
         db.commit()
 
-        records = db.query(PPIData).order_by(PPIData.date.desc()).limit(120).all()
-
-
         return {
-            "series": "PPIFIS (Producer Price Index by Commodity: Final Demand)",
-            "unit": "Percent",
-            "data": [
-                {
-                    "date": r.date,
-                    "value": r.value,
-                    "ppi_change": r.ppi_change
-                }
-                for r in records
-            ]
+            "message": "PPI data updated"
         }
     except Exception as e:
         raise HTTPException(500, detail=str(e))

@@ -29,7 +29,9 @@ export default function PctChart({ data }: ChartProps) {
                         backgroundColor: "rgb(44, 44, 46)", border: "none", padding: "5px"}}
                         labelStyle={{ color: "rgb(199, 199, 204)", fontWeight: "bold" }}
                         itemStyle={{ color: "rgb(199, 199, 204)", fontSize: "14px" }}
-                        formatter={(value: number) => `${value}%`}
+                        formatter={(value) =>
+                            value != null ? `${value}%` : ""
+                        }
                     />
                     <Bar dataKey="actual" fill="#4f46e5" />
                     <Brush dataKey="date" height={30} stroke="#4f46e5" />

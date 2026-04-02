@@ -33,11 +33,21 @@ const PctTable = ({ data }: TableProps) => {
                     return (
                         <tr key={index}>
                             <td>{entry.date}</td>
-                            <td>{entry.actual.toLocaleString()}{entry.actual !== 0 ? '%' : ''}</td>
-                            <td>{entry.forecast.toLocaleString()}{entry.forecast !== 0 ? '%' : ''}</td>
-                            <td>{entry.previous.toLocaleString()}{entry.previous !== 0 ? '%' : ''}</td>
+                            <td>
+                                {entry.actual !== null && entry.actual !== undefined ? entry.actual.toLocaleString() : ''}
+                                {entry.actual ? '%' : ''}
+                            </td>
+                            <td>
+                                {entry.forecast !== null && entry.forecast !== undefined ? entry.forecast.toLocaleString() : ''}
+                                {entry.forecast ? '%' : ''}
+                            </td>
+                            <td>
+                                {entry.previous !== null && entry.previous !== undefined ? entry.previous.toLocaleString() : ''}
+                                {entry.previous ? '%' : ''}
+                            </td>
                             <td style={{ color: surprise > 0 ? "green" : "red" }}>
-                                {surprise.toLocaleString()}{surprise !== 0 ? '%' : ''}
+                                {surprise !== null && surprise !== undefined ? surprise.toLocaleString() : ''}
+                                {surprise ? '%' : ''}
                             </td>
                         </tr>
                     );

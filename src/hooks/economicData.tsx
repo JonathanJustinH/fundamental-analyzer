@@ -9,6 +9,7 @@ export interface EconomicRecord {
     forecast: number;
 }
 
+
 export const useNFPData = () => {
     const [data, setData] = useState<EconomicRecord[]>([]);
     const [loading, setLoading] = useState(true);

@@ -7,28 +7,44 @@ import MockPCTData from "../data/mockPCTdata";
 const PCEData = () => {
     const [data, setData] = useState<EconomicRecord[]>([]);
     const [loading, setLoading] = useState(true);
+    const [updating, setUpdating] = useState(false);
+
+    const fetchPCE = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/pce`);
+            if (!response.ok) throw new Error("No API");
+            const result = await response.json();
+            const transformed_data = result.data.map((item: any, i: number, arr: any[]) => ({
+                date: item.date,
+                actual: item.pce_change,
+                previous: i < arr.length - 1 ? arr[i + 1].pce_change : null,
+                forecast: 0
+            }));
+            setData(transformed_data);
+        } catch (error) {
+            console.error("Error fetching PCE data:", error);
+            setData(MockPCTData);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const updatePCE = async () => {
+        setUpdating(true);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/pce/update`, {method: 'POST'});
+            if (!response.ok) throw new Error("Update failed!");
+            await fetchPCE();
+        } catch (error) {
+            alert("Failed to update PCE data");
+        } finally {
+            setUpdating(false);
+        }
+    }
 
     useEffect(() => {
-        const fetchPCE = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/economic/pce`);
-                if (!response.ok) throw new Error("No API");
-                const result = await response.json();
-                const transformed_data = result.data.map((item: any, i: number, arr: any[]) => ({
-                    date: item.date,
-                    actual: item.pce_change,
-                    previous: i < arr.length - 1 ? arr[i + 1].pce_change : null,
-                    forecast: 0
-                }));
-            setData(transformed_data)
-            } catch (error) {
-                console.error("Error fetching PCE data:", error);
-                setData(MockPCTData)
-            } finally {
-                setLoading(false);
-            }
-        };
-    fetchPCE();
+        fetchPCE();
     }, []);
     
     if (loading) {
@@ -36,7 +52,34 @@ const PCEData = () => {
     }
     return (
         <div style={{ padding: 20 }}>
-            <h1>U.S. Core PCE Price Index YoY</h1>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: 20 }}>
+                <h1>U.S. Core PCE Price Index YoY</h1>
+                <button
+                    onClick={updatePCE}
+                    disabled={updating}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#636366")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "#1C1C1E")}
+                    style={{
+                        padding: "6px 10px",
+                        color: "#c7c7cc",
+                        background: "#1C1C1E",
+                        border: "none",
+                        outline: "none",
+                        boxShadow: "none",
+                        WebkitAppearance: "none",
+                        appearance: "none",
+                        cursor: "pointer",
+                        transition: "background 0.2s ease",
+                        height: 32,
+                        marginLeft: 24,
+                        display: "flex",
+                        alignItems: "center"
+                    }}
+                >
+                    {updating ? "Updating..." : "Refresh"}
+                </button>
+            </div>
+            
             <p>
                 The Core PCE price Index is the less volatile measure of the PCE price index which
                 excludes the more volatile and seasonal food and energy prices. The impact on the

@@ -12,6 +12,28 @@ Base.metadata.create_all(bind=engine)
 
 @router.get("/economic/retail_sales")
 def get_re_sa_history():
+    db: Session = SessionLocal()
+    try:
+        records = db.query(ReSaData).order_by(ReSaData.date.desc()).limit(120).all()
+        return {
+            "series": "RSAFS (Advance Retail Sales: Retail Trade and Food Services)",
+            "unit": "Percent",
+            "data": [
+                {
+                    "date": r.date,
+                    "value": r.value,
+                    "re_sa_change": r.re_sa_change
+                }
+                for r in records
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    finally:
+        db.close()
+
+@router.post("/economic/retail_sales/update")
+def update_re_sa_history():
     api_key = os.getenv("FRED_API_KEY")
     if not api_key:
         raise HTTPException(500, "API key not configured")
@@ -32,22 +54,7 @@ def get_re_sa_history():
             if not db.query(ReSaData).filter(ReSaData.date == row["date"]).first():
                 db.add(ReSaData(date=row["date"], value=row["value"], re_sa_change=row["re_sa_change"]))
         db.commit()
-
-        records = db.query(ReSaData).order_by(ReSaData.date.desc()).limit(120).all()
-
-
-        return {
-            "series": "RSAFS (Advance Retail Sales: Retail Trade and Food Services)",
-            "unit": "Percent",
-            "data": [
-                {
-                    "date": r.date,
-                    "value": r.value,
-                    "re_sa_change": r.re_sa_change
-                }
-                for r in records
-            ]
-        }
+        return {"message": "Retail Sales data updated"}
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     finally:

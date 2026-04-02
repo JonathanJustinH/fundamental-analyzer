@@ -29,30 +29,49 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         }
     ]
     return (
-        <aside className={`sidePanel ${isOpen ? "open" : ""}`}>
-            <button className="closeButton" onClick={onClose}>
-                ✕
-            </button>
-            <nav>
-                <Link to="/" onClick={onClose}>Home</Link>
-                <Link to="/cot-data" onClick={onClose}>COT Data</Link>
-                {menu.map((section) => (
-                    <div className="dropdown" key={section.country}>
-                        <button className="dropdownToggle" onClick={() => toggleDropdown(section.country)}>
-                            <span>{section.country}</span>
-                            <span>{openCountry === section.country ? "▲" : "▼"}</span>
-                        </button>
-                        <div className={`dropdownMenu ${openCountry === section.country ? "open" : ""}`}>
-                            {section.items.map((item) =>(
-                                <Link key={item.path} to={item.path} onClick={onClose} className="dropdownItem">
-                                    {item.label}
-                                </Link>
-                            ))}
+        <div
+            className={`sidebar-overlay${isOpen ? " open" : ""}`}
+            onClick={onClose}
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                zIndex: 1000,
+                pointerEvents: isOpen ? "auto" : "none",
+                transition: "background 0.3s ease"
+            }}
+        >
+            <aside
+                className={`sidePanel${isOpen ? " open" : ""}`}
+                onClick={e => e.stopPropagation()}
+                style={{ position: "absolute", top: 0, left: 0 }}
+            >
+                <button className="closeButton" onClick={onClose}>
+                    ✕
+                </button>
+                <nav>
+                    <Link to="/" onClick={onClose}>Home</Link>
+                    <Link to="/cot-data" onClick={onClose}>COT Data</Link>
+                    {menu.map((section) => (
+                        <div className="dropdown" key={section.country}>
+                            <button className="dropdownToggle" onClick={() => toggleDropdown(section.country)}>
+                                <span>{section.country}</span>
+                                <span>{openCountry === section.country ? "▲" : "▼"}</span>
+                            </button>
+                            <div className={`dropdownMenu ${openCountry === section.country ? "open" : ""}`}>
+                                {section.items.map((item) =>(
+                                    <Link key={item.path} to={item.path} onClick={onClose} className="dropdownItem">
+                                        {item.label}
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </nav>
-        </aside>
+                    ))}
+                </nav>
+            </aside>
+        </div>
     )
 }
 
