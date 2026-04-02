@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, Float, Date
-from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+from sqlalchemy import Column, Integer, Float, Date
+from database import Base
 
 class NFPData(Base):
     __tablename__ = "nfp_data"

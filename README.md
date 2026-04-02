@@ -8,7 +8,6 @@ A full-stack web application for visualizing and analyzing key US economic indic
 ## Features
 - Interactive charts and tables for NFP, CPI, PPI, PCE, Retail Sales, and more
 - Modular FastAPI backend with RESTful API endpoints
-- SQLite database for database storage
 - Simple and modern UI
 - Mock data for easy demo/testing
 
@@ -16,7 +15,7 @@ A full-stack web application for visualizing and analyzing key US economic indic
 
 ## Built With
 - **Frontend:** React, TypeScript
-- **Backend:** FastAPI, SQLAlchemy, SQLite
+- **Backend:** FastAPI, SQLAlchemy, Supabase/Postgres
 - **Testing:** Pytest, FastAPI TestClient
 
 ---
@@ -29,7 +28,6 @@ fundementalanalyzer/
 │   ├── models.py         # SQLAlchemy models
 │   ├── database.py       # DB connection
 │   ├── routes/           # API route modules
-│   ├── economic.db       # SQLite database
 │   └── test_main.py      # Pytest example
 ├── src/                  # React frontend
 │   ├── components/       # Reusable UI components

@@ -54,11 +54,16 @@ def update_nfp_history():
 
         df = df.replace([np.nan, np.inf, -np.inf, pd.NA, pd.NaT], None)
 
+        # Fetch all existing dates in one query for efficiency
+        existing_dates = set(r[0] for r in db.query(NFPData.date).all())
+        new_records = []
         for _, row in df.iterrows():
-            if not db.query(NFPData).filter(NFPData.date == row["date"]).first():
-                db.add(NFPData(date=row["date"], value=row["value"], nfp_change=row["nfp_change"]))
-        db.commit()
-        return {"message": "NFP data updated from FRED."}
+            if row["date"] not in existing_dates:
+                new_records.append(NFPData(date=row["date"], value=row["value"], nfp_change=row["nfp_change"]))
+        if new_records:
+            db.add_all(new_records)
+            db.commit()
+        return {"message": f"NFP data updated from FRED. {len(new_records)} new records added."}
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     finally:

@@ -53,11 +53,16 @@ def update_cpi_history():
 
         df = df.replace([np.nan, np.inf, -np.inf, pd.NA, pd.NaT], None)
 
-        for _, row in df.iterrows():
-            if not db.query(CPIData).filter(CPIData.date == row["date"]).first():
-                db.add(CPIData(date=row["date"], value=row["value"], cpi_change=row["cpi_change"]))
-        db.commit()
-        return {"message": "CPI data updated"}
+        # Bulk insert optimization
+        existing_dates = set(r[0] for r in db.query(CPIData.date).all())
+        new_records = [
+            CPIData(date=row["date"], value=row["value"], cpi_change=row["cpi_change"])
+            for _, row in df.iterrows() if row["date"] not in existing_dates
+        ]
+        if new_records:
+            db.bulk_save_objects(new_records)
+            db.commit()
+        return {"message": f"CPI data updated. Inserted {len(new_records)} new records."}
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     finally:

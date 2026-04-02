@@ -51,14 +51,16 @@ def update_ppi_history():
 
         df = df.replace([np.nan, np.inf, -np.inf, pd.NA, pd.NaT], None)
 
-        for _, row in df.iterrows():
-            if not db.query(PPIData).filter(PPIData.date == row["date"]).first():
-                db.add(PPIData(date=row["date"], value=row["value"], ppi_change=row["ppi_change"]))
-        db.commit()
-
-        return {
-            "message": "PPI data updated"
-        }
+        # Bulk insert optimization
+        existing_dates = set(r[0] for r in db.query(PPIData.date).all())
+        new_records = [
+            PPIData(date=row["date"], value=row["value"], ppi_change=row["ppi_change"])
+            for _, row in df.iterrows() if row["date"] not in existing_dates
+        ]
+        if new_records:
+            db.bulk_save_objects(new_records)
+            db.commit()
+        return {"message": f"PPI data updated. Inserted {len(new_records)} new records."}
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     finally:
